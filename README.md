@@ -1,6 +1,6 @@
-# Translator - OpenAI SDK Demo
+# AI Translation Quality Analyzer
 
-A quick JavaScript project demonstrating the OpenAI SDK with various examples including text completion, translation, creative writing, and code explanation.
+An advanced AI-powered tool for analyzing translation quality across multiple language versions of websites. Detects linguistic errors, translation inconsistencies, terminology issues, and brand name inconsistencies using OpenAI's GPT models.
 
 ## Setup
 
@@ -19,33 +19,58 @@ A quick JavaScript project demonstrating the OpenAI SDK with various examples in
 
 ## Usage
 
-Run the demonstration script:
+### Analyze a specific URL:
+```bash
+npm run analyze https://example.com
+# or
+node translation-analyzer.js https://example.com
+```
 
+### Analyze Bobcat website with EU languages:
+```bash
+npm run test-bobcat
+# or
+node translation-analyzer.js
+```
+
+### Run the basic demo:
 ```bash
 npm start
 # or
 npm run demo
-# or
-node demo.js
 ```
 
-## What the Demo Includes
+## Features
 
-The demonstration script (`demo.js`) showcases:
+### 🔍 Translation Quality Analysis
+- **Grammar & Syntax Detection** - Identifies grammatical errors and syntax issues
+- **Translation Accuracy** - Compares translations against baseline (English)
+- **Fluency Assessment** - Evaluates naturalness and readability
+- **Cultural Appropriateness** - Checks for cultural context issues
 
-1. **Text Completion** - Basic AI text generation
-2. **Translation** - Text translation between languages
-3. **Creative Writing** - AI-generated creative content (haiku)
-4. **Code Explanation** - AI explaining JavaScript code
+### 📚 Terminology & Brand Consistency
+- **Terminology Analysis** - Detects inconsistent technical terms
+- **Brand Name Consistency** - Ensures consistent brand representation
+- **Style Guide Compliance** - Identifies deviations from established guidelines
+
+### 📊 Comprehensive Reporting
+- **Quality Scoring** - 0-100 quality scores for each language
+- **Issue Categorization** - Critical, high, medium, low severity levels
+- **Actionable Suggestions** - Specific recommendations for improvement
+- **Visual Reports** - Color-coded console output and saved text reports
 
 ## Project Structure
 
 ```
 translator/
-├── package.json          # Project dependencies and scripts
-├── demo.js              # Main demonstration script
-├── env.example          # Environment variables template
-└── README.md            # This file
+├── package.json              # Project dependencies and scripts
+├── demo.js                   # Basic OpenAI SDK demonstration
+├── translation-analyzer.js   # Main analysis tool (CLI)
+├── web-scraper.js           # Web scraping functionality
+├── translation-analyzer.js   # AI-powered translation analysis
+├── report-generator.js      # Report generation and formatting
+├── env.example              # Environment variables template
+└── README.md                # This file
 ```
 
 ## Requirements
@@ -54,12 +79,52 @@ translator/
 - OpenAI API key
 - Internet connection
 
+## Example Output
+
+The tool generates comprehensive reports like this:
+
+```
+🌐 TRANSLATION QUALITY ANALYSIS REPORT
+================================================================================
+
+📊 Analysis Summary:
+• Generated: 12/7/2023, 2:30:45 PM
+• Pages Analyzed: 5
+• Baseline Language: EN
+• Overall Quality Score: 78/100
+• Total Issues Found: 12
+• Critical Issues: 2
+
+📋 EXECUTIVE SUMMARY
+✅ GOOD - Translation quality is good with some minor issues to address.
+
+Key Findings:
+• Quality Score: 78/100
+• Total Issues: 12
+• Critical Issues: 2
+• Terminology Consistency: 85/100
+```
+
+## Testing the Tool
+
+The tool is specifically designed to test on the Bobcat website with EU languages:
+
+```bash
+npm run test-bobcat
+```
+
+This will analyze:
+- English (baseline)
+- German, French, Spanish, Italian
+- Dutch, Polish, Portuguese
+- Swedish, Danish, Norwegian, Finnish
+
 ## Next Steps
 
-This is a basic setup to get you started. You can extend this project by:
+Extend this tool by:
 
-- Adding more sophisticated translation features
-- Implementing conversation flows
-- Adding error handling and retry logic
-- Creating a web interface
-- Adding support for different AI models
+- Adding support for more languages
+- Implementing custom terminology dictionaries
+- Creating web-based dashboard
+- Adding automated testing workflows
+- Integrating with translation management systems
