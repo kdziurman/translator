@@ -134,31 +134,40 @@ export class WebScraper {
   /**
    * Extract text from multiple language versions of a page
    * @param {string} baseUrl - Base URL to analyze
-   * @param {Array} languagePaths - Array of language-specific paths
+   * @param {Array} languageUrls - Array of full language-specific URLs
    * @returns {Array} - Array of scraped content for each language
    */
-  async scrapeMultipleLanguages(baseUrl, languagePaths = []) {
+  async scrapeMultipleLanguages(baseUrl, languageUrls = []) {
     const results = [];
     
     // Always include the base URL
     try {
+      console.log(`🔍 Scraping base URL: ${baseUrl}`);
       const baseResult = await this.scrapeUrl(baseUrl);
       results.push(baseResult);
+      console.log(`✅ Base URL scraped successfully`);
     } catch (error) {
       console.warn(`⚠️ Could not scrape base URL: ${error.message}`);
     }
     
     // Scrape language-specific versions
-    for (const path of languagePaths) {
-      try {
-        const fullUrl = path.startsWith('http') ? path : `${baseUrl}${path}`;
-        const result = await this.scrapeUrl(fullUrl);
-        results.push(result);
-      } catch (error) {
-        console.warn(`⚠️ Could not scrape ${path}: ${error.message}`);
+    if (languageUrls.length > 0) {
+      console.log(`🌍 Scraping ${languageUrls.length} language-specific URLs...`);
+      
+      for (let i = 0; i < languageUrls.length; i++) {
+        const langUrl = languageUrls[i];
+        try {
+          console.log(`📥 Scraping ${i + 1}/${languageUrls.length}: ${langUrl}`);
+          const result = await this.scrapeUrl(langUrl);
+          results.push(result);
+          console.log(`✅ Language URL scraped successfully`);
+        } catch (error) {
+          console.warn(`⚠️ Could not scrape ${langUrl}: ${error.message}`);
+        }
       }
     }
     
+    console.log(`📊 Total content scraped: ${results.length} pages`);
     return results;
   }
 }
