@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import chalk from "chalk";
 
 /**
  * Generate comprehensive reports for translation quality analysis
@@ -12,7 +12,7 @@ export class ReportGenerator {
       low: chalk.blue,
       success: chalk.green,
       info: chalk.cyan,
-      warning: chalk.magenta
+      warning: chalk.magenta,
     };
   }
 
@@ -25,29 +25,33 @@ export class ReportGenerator {
    */
   generateReport(analysisResults, terminologyResults, scrapedContent) {
     const report = [];
-    
+
     // Header
     report.push(this.generateHeader(analysisResults, scrapedContent));
-    
+
     // Executive Summary
-    report.push(this.generateExecutiveSummary(analysisResults, terminologyResults));
-    
+    report.push(
+      this.generateExecutiveSummary(analysisResults, terminologyResults),
+    );
+
     // Quality Analysis
     report.push(this.generateQualityAnalysis(analysisResults));
-    
+
     // Terminology Analysis
     report.push(this.generateTerminologyAnalysis(terminologyResults));
-    
+
     // Detailed Issues
     report.push(this.generateDetailedIssues(analysisResults));
-    
+
     // Recommendations
-    report.push(this.generateRecommendations(analysisResults, terminologyResults));
-    
+    report.push(
+      this.generateRecommendations(analysisResults, terminologyResults),
+    );
+
     // Footer
     report.push(this.generateFooter());
-    
-    return report.join('\n\n');
+
+    return report.join("\n\n");
   }
 
   /**
@@ -56,13 +60,13 @@ export class ReportGenerator {
   generateHeader(analysisResults, scrapedContent) {
     const timestamp = new Date().toLocaleString();
     const totalPages = scrapedContent.length;
-    
-    return `
-${this.colors.info('='.repeat(80))}
-${this.colors.info('🌐 TRANSLATION QUALITY ANALYSIS REPORT')}
-${this.colors.info('='.repeat(80))}
 
-${this.colors.info('📊 Analysis Summary:')}
+    return `
+${this.colors.info("=".repeat(80))}
+${this.colors.info("🌐 TRANSLATION QUALITY ANALYSIS REPORT")}
+${this.colors.info("=".repeat(80))}
+
+${this.colors.info("📊 Analysis Summary:")}
 • Generated: ${timestamp}
 • Pages Analyzed: ${totalPages}
 • Baseline Language: ${analysisResults.baseline.language.toUpperCase()}
@@ -80,28 +84,28 @@ ${this.colors.info('📊 Analysis Summary:')}
     const score = analysisResults.overallScore;
     const criticalIssues = analysisResults.criticalIssues;
     const totalIssues = analysisResults.totalIssues;
-    
-    let summary = `${this.colors.info('📋 EXECUTIVE SUMMARY')}\n`;
-    
+
+    let summary = `${this.colors.info("📋 EXECUTIVE SUMMARY")}\n`;
+
     if (score >= 90) {
-      summary += `${this.colors.success('✅ EXCELLENT')} - Translation quality is excellent with minimal issues.\n`;
+      summary += `${this.colors.success("✅ EXCELLENT")} - Translation quality is excellent with minimal issues.\n`;
     } else if (score >= 75) {
-      summary += `${this.colors.info('✅ GOOD')} - Translation quality is good with some minor issues to address.\n`;
+      summary += `${this.colors.info("✅ GOOD")} - Translation quality is good with some minor issues to address.\n`;
     } else if (score >= 60) {
-      summary += `${this.colors.warning('⚠️ FAIR')} - Translation quality needs improvement. Several issues require attention.\n`;
+      summary += `${this.colors.warning("⚠️ FAIR")} - Translation quality needs improvement. Several issues require attention.\n`;
     } else {
-      summary += `${this.colors.critical('❌ POOR')} - Translation quality is poor. Significant issues require immediate attention.\n`;
+      summary += `${this.colors.critical("❌ POOR")} - Translation quality is poor. Significant issues require immediate attention.\n`;
     }
-    
-    summary += `\n${this.colors.info('Key Findings:')}\n`;
+
+    summary += `\n${this.colors.info("Key Findings:")}\n`;
     summary += `• Quality Score: ${this.getScoreColor(score)}${score}/100${chalk.reset}\n`;
     summary += `• Total Issues: ${totalIssues}\n`;
     summary += `• Critical Issues: ${this.colors.critical(criticalIssues)}\n`;
-    
+
     if (terminologyResults.overallConsistencyScore) {
       summary += `• Terminology Consistency: ${this.getScoreColor(terminologyResults.overallConsistencyScore)}${terminologyResults.overallConsistencyScore}/100${chalk.reset}\n`;
     }
-    
+
     return summary;
   }
 
@@ -109,30 +113,32 @@ ${this.colors.info('📊 Analysis Summary:')}
    * Generate quality analysis section
    */
   generateQualityAnalysis(analysisResults) {
-    let section = `${this.colors.info('🔍 QUALITY ANALYSIS BY LANGUAGE')}\n`;
-    section += `${'='.repeat(50)}\n\n`;
-    
+    let section = `${this.colors.info("🔍 QUALITY ANALYSIS BY LANGUAGE")}\n`;
+    section += `${"=".repeat(50)}\n\n`;
+
     analysisResults.comparisons.forEach((comparison, index) => {
       const score = comparison.qualityScore;
       const issues = comparison.issues.length;
-      const criticalIssues = comparison.issues.filter(issue => issue.severity === 'critical').length;
-      
+      const criticalIssues = comparison.issues.filter(
+        (issue) => issue.severity === "critical",
+      ).length;
+
       section += `${this.colors.info(`${index + 1}. ${comparison.targetLanguage.toUpperCase()}`)}\n`;
       section += `   URL: ${comparison.targetUrl}\n`;
       section += `   Quality Score: ${this.getScoreColor(score)}${score}/100${chalk.reset}\n`;
       section += `   Issues: ${issues} (${this.colors.critical(criticalIssues)} critical)\n`;
-      
+
       if (comparison.issues.length > 0) {
-        section += `   ${this.colors.warning('Top Issues:')}\n`;
-        comparison.issues.slice(0, 3).forEach(issue => {
+        section += `   ${this.colors.warning("Top Issues:")}\n`;
+        comparison.issues.slice(0, 3).forEach((issue) => {
           const severityColor = this.getSeverityColor(issue.severity);
           section += `   • ${severityColor}${issue.severity.toUpperCase()}${chalk.reset}: ${issue.message}\n`;
         });
       }
-      
-      section += '\n';
+
+      section += "\n";
     });
-    
+
     return section;
   }
 
@@ -140,39 +146,49 @@ ${this.colors.info('📊 Analysis Summary:')}
    * Generate terminology analysis section
    */
   generateTerminologyAnalysis(terminologyResults) {
-    let section = `${this.colors.info('📚 TERMINOLOGY & BRAND CONSISTENCY')}\n`;
-    section += `${'='.repeat(50)}\n\n`;
-    
+    let section = `${this.colors.info("📚 TERMINOLOGY & BRAND CONSISTENCY")}\n`;
+    section += `${"=".repeat(50)}\n\n`;
+
     if (terminologyResults.overallConsistencyScore) {
       section += `Overall Consistency Score: ${this.getScoreColor(terminologyResults.overallConsistencyScore)}${terminologyResults.overallConsistencyScore}/100${chalk.reset}\n\n`;
     }
-    
-    if (terminologyResults.inconsistentTerms && terminologyResults.inconsistentTerms.length > 0) {
-      section += `${this.colors.warning('Inconsistent Terminology:')}\n`;
+
+    if (
+      terminologyResults.inconsistentTerms &&
+      terminologyResults.inconsistentTerms.length > 0
+    ) {
+      section += `${this.colors.warning("Inconsistent Terminology:")}\n`;
       terminologyResults.inconsistentTerms.forEach((term, index) => {
         section += `${index + 1}. "${this.colors.high(term.term)}"\n`;
         section += `   Variations:\n`;
-        term.variations.forEach(variation => {
+        term.variations.forEach((variation) => {
           section += `   • ${variation.language}: "${variation.version}"\n`;
         });
-        section += `   ${this.colors.success('Recommended:')} "${term.recommendedTerm}"\n\n`;
+        section += `   ${this.colors.success("Recommended:")} "${term.recommendedTerm}"\n\n`;
       });
     }
-    
-    if (terminologyResults.brandInconsistencies && terminologyResults.brandInconsistencies.length > 0) {
-      section += `${this.colors.warning('Brand Inconsistencies:')}\n`;
+
+    if (
+      terminologyResults.brandInconsistencies &&
+      terminologyResults.brandInconsistencies.length > 0
+    ) {
+      section += `${this.colors.warning("Brand Inconsistencies:")}\n`;
       terminologyResults.brandInconsistencies.forEach((brand, index) => {
         section += `${index + 1}. ${this.colors.high(brand.brandElement)}\n`;
-        section += `   Variations: ${brand.variations.join(', ')}\n`;
-        section += `   ${this.colors.success('Recommended:')} "${brand.recommendedVersion}"\n\n`;
+        section += `   Variations: ${brand.variations.join(", ")}\n`;
+        section += `   ${this.colors.success("Recommended:")} "${brand.recommendedVersion}"\n\n`;
       });
     }
-    
-    if ((!terminologyResults.inconsistentTerms || terminologyResults.inconsistentTerms.length === 0) &&
-        (!terminologyResults.brandInconsistencies || terminologyResults.brandInconsistencies.length === 0)) {
-      section += `${this.colors.success('✅ No terminology or brand inconsistencies found!')}\n`;
+
+    if (
+      (!terminologyResults.inconsistentTerms ||
+        terminologyResults.inconsistentTerms.length === 0) &&
+      (!terminologyResults.brandInconsistencies ||
+        terminologyResults.brandInconsistencies.length === 0)
+    ) {
+      section += `${this.colors.success("✅ No terminology or brand inconsistencies found!")}\n`;
     }
-    
+
     return section;
   }
 
@@ -180,35 +196,35 @@ ${this.colors.info('📊 Analysis Summary:')}
    * Generate detailed issues section
    */
   generateDetailedIssues(analysisResults) {
-    let section = `${this.colors.info('🐛 DETAILED ISSUES BREAKDOWN')}\n`;
-    section += `${'='.repeat(50)}\n\n`;
-    
+    let section = `${this.colors.info("🐛 DETAILED ISSUES BREAKDOWN")}\n`;
+    section += `${"=".repeat(50)}\n\n`;
+
     let issueCount = 1;
-    
-    analysisResults.comparisons.forEach(comparison => {
+
+    analysisResults.comparisons.forEach((comparison) => {
       if (comparison.issues.length > 0) {
         section += `${this.colors.info(`${comparison.targetLanguage.toUpperCase()} Issues:`)}\n`;
-        
-        comparison.issues.forEach(issue => {
+
+        comparison.issues.forEach((issue) => {
           const severityColor = this.getSeverityColor(issue.severity);
           section += `${issueCount}. ${severityColor}[${issue.severity.toUpperCase()}]${chalk.reset} ${issue.type}\n`;
-          section += `   ${this.colors.warning('Issue:')} ${issue.message}\n`;
+          section += `   ${this.colors.warning("Issue:")} ${issue.message}\n`;
           if (issue.context) {
-            section += `   ${this.colors.info('Context:')} "${issue.context}"\n`;
+            section += `   ${this.colors.info("Context:")} "${issue.context}"\n`;
           }
           if (issue.suggestion) {
-            section += `   ${this.colors.success('Suggestion:')} ${issue.suggestion}\n`;
+            section += `   ${this.colors.success("Suggestion:")} ${issue.suggestion}\n`;
           }
-          section += '\n';
+          section += "\n";
           issueCount++;
         });
       }
     });
-    
+
     if (issueCount === 1) {
-      section += `${this.colors.success('✅ No detailed issues found!')}\n`;
+      section += `${this.colors.success("✅ No detailed issues found!")}\n`;
     }
-    
+
     return section;
   }
 
@@ -216,41 +232,61 @@ ${this.colors.info('📊 Analysis Summary:')}
    * Generate recommendations section
    */
   generateRecommendations(analysisResults, terminologyResults) {
-    let section = `${this.colors.info('💡 RECOMMENDATIONS')}\n`;
-    section += `${'='.repeat(50)}\n\n`;
-    
+    let section = `${this.colors.info("💡 RECOMMENDATIONS")}\n`;
+    section += `${"=".repeat(50)}\n\n`;
+
     const recommendations = [];
-    
+
     // Quality-based recommendations
     if (analysisResults.overallScore < 70) {
-      recommendations.push(`${this.colors.critical('🔴 URGENT:')} Overall translation quality is below acceptable standards. Consider professional review.`);
+      recommendations.push(
+        `${this.colors.critical("🔴 URGENT:")} Overall translation quality is below acceptable standards. Consider professional review.`,
+      );
     } else if (analysisResults.overallScore < 85) {
-      recommendations.push(`${this.colors.warning('🟡 IMPROVE:')} Translation quality needs improvement. Focus on the most critical issues first.`);
+      recommendations.push(
+        `${this.colors.warning("🟡 IMPROVE:")} Translation quality needs improvement. Focus on the most critical issues first.`,
+      );
     }
-    
+
     // Critical issues recommendations
     if (analysisResults.criticalIssues > 0) {
-      recommendations.push(`${this.colors.critical('🔴 CRITICAL:')} Address ${analysisResults.criticalIssues} critical issues immediately.`);
+      recommendations.push(
+        `${this.colors.critical("🔴 CRITICAL:")} Address ${analysisResults.criticalIssues} critical issues immediately.`,
+      );
     }
-    
+
     // Terminology recommendations
-    if (terminologyResults.inconsistentTerms && terminologyResults.inconsistentTerms.length > 0) {
-      recommendations.push(`${this.colors.warning('📚 TERMINOLOGY:')} Create a style guide to ensure consistent terminology across all languages.`);
+    if (
+      terminologyResults.inconsistentTerms &&
+      terminologyResults.inconsistentTerms.length > 0
+    ) {
+      recommendations.push(
+        `${this.colors.warning("📚 TERMINOLOGY:")} Create a style guide to ensure consistent terminology across all languages.`,
+      );
     }
-    
+
     // Brand consistency recommendations
-    if (terminologyResults.brandInconsistencies && terminologyResults.brandInconsistencies.length > 0) {
-      recommendations.push(`${this.colors.warning('🏷️ BRAND:')} Establish brand guidelines to maintain consistent brand representation across languages.`);
+    if (
+      terminologyResults.brandInconsistencies &&
+      terminologyResults.brandInconsistencies.length > 0
+    ) {
+      recommendations.push(
+        `${this.colors.warning("🏷️ BRAND:")} Establish brand guidelines to maintain consistent brand representation across languages.`,
+      );
     }
-    
+
     // General recommendations
-    recommendations.push(`${this.colors.info('📋 GENERAL:')} Implement regular quality checks for all translated content.`);
-    recommendations.push(`${this.colors.info('🔄 PROCESS:')} Consider using translation management tools for better consistency.`);
-    
+    recommendations.push(
+      `${this.colors.info("📋 GENERAL:")} Implement regular quality checks for all translated content.`,
+    );
+    recommendations.push(
+      `${this.colors.info("🔄 PROCESS:")} Consider using translation management tools for better consistency.`,
+    );
+
     recommendations.forEach((rec, index) => {
       section += `${index + 1}. ${rec}\n`;
     });
-    
+
     return section;
   }
 
@@ -259,9 +295,9 @@ ${this.colors.info('📊 Analysis Summary:')}
    */
   generateFooter() {
     return `
-${this.colors.info('='.repeat(80))}
-${this.colors.info('📄 Report generated by AI Translation Quality Analyzer')}
-${this.colors.info('='.repeat(80))}
+${this.colors.info("=".repeat(80))}
+${this.colors.info("📄 Report generated by AI Translation Quality Analyzer")}
+${this.colors.info("=".repeat(80))}
 `;
   }
 
@@ -280,11 +316,16 @@ ${this.colors.info('='.repeat(80))}
    */
   getSeverityColor(severity) {
     switch (severity) {
-      case 'critical': return this.colors.critical;
-      case 'high': return this.colors.high;
-      case 'medium': return this.colors.medium;
-      case 'low': return this.colors.low;
-      default: return this.colors.info;
+      case "critical":
+        return this.colors.critical;
+      case "high":
+        return this.colors.high;
+      case "medium":
+        return this.colors.medium;
+      case "low":
+        return this.colors.low;
+      default:
+        return this.colors.info;
     }
   }
 
@@ -293,13 +334,15 @@ ${this.colors.info('='.repeat(80))}
    * @param {string} report - Report content
    * @param {string} filename - Output filename
    */
-  async saveReport(report, filename = 'translation-analysis-report.txt') {
+  async saveReport(report, filename = "translation-analysis-report.txt") {
     try {
-      const fs = await import('fs/promises');
-      await fs.writeFile(filename, report, 'utf8');
-      console.log(`${this.colors.success('✅ Report saved to:')} ${filename}`);
+      const fs = await import("fs/promises");
+      await fs.writeFile(filename, report, "utf8");
+      console.log(`${this.colors.success("✅ Report saved to:")} ${filename}`);
     } catch (error) {
-      console.error(`${this.colors.critical('❌ Error saving report:')} ${error.message}`);
+      console.error(
+        `${this.colors.critical("❌ Error saving report:")} ${error.message}`,
+      );
     }
   }
 }
