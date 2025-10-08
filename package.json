@@ -2,13 +2,13 @@
   "name": "translator",
   "version": "1.0.0",
   "description": "AI-powered translation quality analysis tool",
-  "main": "translation-analyzer.js",
+  "main": "analyzer.js",
   "type": "module",
   "scripts": {
     "start": "node demo.js",
     "demo": "node demo.js",
-    "analyze": "node translation-analyzer.js",
-    "test-bobcat": "node translation-analyzer.js https://www.bobcat.com/regions"
+    "analyze": "node analyzer.js",
+    "test-bobcat": "node analyzer.js"
   },
   "dependencies": {
     "openai": "^4.20.1",
