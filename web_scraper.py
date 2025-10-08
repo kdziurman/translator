@@ -25,7 +25,7 @@ class WebScraper:
     
     def extract_text_content(self, url: str) -> Dict[str, str]:
         """
-        Extract text content from a webpage.
+        Extract text content from a webpage, focusing only on <p> tags.
         
         Args:
             url: The URL to scrape
@@ -43,13 +43,17 @@ class WebScraper:
             for script in soup(["script", "style"]):
                 script.decompose()
             
-            # Extract text content
-            text_content = soup.get_text()
+            # Extract text content only from <p> tags
+            p_tags = soup.find_all('p')
+            text_content = ""
+            
+            for p in p_tags:
+                p_text = p.get_text().strip()
+                if p_text:  # Only add non-empty paragraphs
+                    text_content += p_text + " "
             
             # Clean up whitespace
-            lines = (line.strip() for line in text_content.splitlines())
-            chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-            text_content = ' '.join(chunk for chunk in chunks if chunk)
+            text_content = ' '.join(text_content.split())
             
             # Limit content length
             if len(text_content) > MAX_CONTENT_LENGTH:
@@ -68,13 +72,16 @@ class WebScraper:
             html_lang = soup.find('html', attrs={'lang': True})
             detected_lang = html_lang.get('lang', '') if html_lang else ""
             
+            logger.info(f"Extracted {len(p_tags)} paragraph tags, {len(text_content)} characters")
+            
             return {
                 'url': url,
                 'title': title_text,
                 'description': description,
                 'content': text_content,
                 'html_lang': detected_lang,
-                'content_length': len(text_content)
+                'content_length': len(text_content),
+                'paragraph_count': len(p_tags)
             }
             
         except requests.RequestException as e:

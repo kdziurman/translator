@@ -88,6 +88,9 @@ class ReportGenerator:
         
         if 'content_length' in results:
             self.console.print(f"Content Length: {results['content_length']:,} characters")
+        
+        if 'paragraph_count' in results:
+            self.console.print(f"Paragraphs Analyzed: {results['paragraph_count']}")
     
     def _print_quality_scores(self, results: Dict[str, Any]) -> None:
         """Print quality scores."""
