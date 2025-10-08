@@ -1,0 +1,10 @@
+requests>=2.31.0
+beautifulsoup4>=4.12.2
+lxml>=4.9.3
+langdetect>=1.0.9
+googletrans>=4.0.0rc1
+openai>=1.3.0
+python-dotenv>=1.0.0
+click>=8.1.7
+rich>=13.7.0
+pydantic>=2.5.0
